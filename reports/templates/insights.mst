@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Insights</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <section class="cr-c-paper container">
+      <h1>Assignment Insights</h1>
+      <hr>
+      <h2>Details</h2>
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <th scope="row">Assignment Name</th>
+            <td>{{assignmentName}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Generated On</th>
+            <td>{{date}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>Summary</h3>
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <th scope="row">Total Members Submitted Assignment</th>
+            <td>{{totalMembersSubmittedAssignment}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Total Members Yet to Submit Assignment</th>
+            <td>{{totalMembersYetToSubmitAssignment}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>Members Completed Assignment</h3>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Members Completed Assignment</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#listOfMembersSubmittedAssignments}}
+          <tr>
+            <td>{{name}}</td>
+          </tr>
+          {{/listOfMembersSubmittedAssignments}}
+        </tbody>
+      </table>
+      <h3>Members Yet to Complete Assignment</h3>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Members Yet to Complete Assignment</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#listOfMembersYetToSubmitAssignment}}
+          <tr>
+            <td>{{name}}</td>
+          </tr>
+          {{/listOfMembersYetToSubmitAssignment}}
+        </tbody>
+      </table>
+    </section>
+  </body>
+</html>
