@@ -1,6 +1,6 @@
 # Coderoom
 
-A Review Utility Tool for Large Teams which facilitates in reviewing the code easily.
+A Review Utility Tool for Gitlab which facilitates in code reviewing easily.
 
 ## Install
 
@@ -11,10 +11,12 @@ sudo npm install -g coderoom
 ## Command Line Usage
 
 ```
-coderoom initialize
+coderoom help
 coderoom version
+coderoom initialize
 coderoom clone
-coderoom insights
+coderoom members
+coderoom open-issue
 coderoom generate-insights
 ```
 

@@ -8,9 +8,6 @@
 /* eslint no-console:off */
 /* eslint global-require:off */
 
-const clone = require('../lib/clone');
-const members = require('../lib/members');
-const insights = require('../lib/insights');
 const usage = require('../lib/cli-usage.js');
 const configInitializer = require('../lib/config/config-initializer');
 
@@ -20,19 +17,24 @@ switch (arg) {
   case 'initialize':
     configInitializer.initializeConfig();
     break;
-  case 'members':
+  case 'members': {
+    const members = require('../lib/members');
     members.load().then(membersOfGroup => console.log(membersOfGroup));
     break;
-  case 'clone':
+  }
+  case 'clone': {
+    const clone = require('../lib/clone');
     clone.cloneAllAssignments();
-    break;
-  case 'insights': {
-    const submissionInfo = insights.submissionInfo();
-    submissionInfo.then(info => console.log(info));
     break;
   }
   case 'generate-insights': {
+    const insights = require('../lib/insights');
     insights.generateInsightsAsHTML();
+    break;
+  }
+  case 'open-issue': {
+    const issueOpener = require('../lib/open-issue');
+    issueOpener.openIssues();
     break;
   }
   default:
