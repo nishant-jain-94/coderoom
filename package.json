@@ -2,7 +2,9 @@
   "name": "coderoom-gitlab",
   "version": "1.0.0",
   "description": "A Review Utility Tool which facilitates in code reviewing easily.",
-  "bin": "./bin/coderoom.js",
+  "bin": {
+    "coderoom": "./bin/coderoom.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,11 +12,11 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nishant-jain-94/coderoom"    
+    "url": "https://github.com/nishant-jain-94/coderoom"
   },
   "bugs": {
     "url": "https://github.com/nishant-jain-94/coderoom/issues",
-    "email": "nishantkumarajain@gmail.com"    
+    "email": "nishantkumarajain@gmail.com"
   },
   "dependencies": {
     "chalk": "^2.3.0",
