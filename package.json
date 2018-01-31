@@ -1,6 +1,6 @@
 {
   "name": "coderoom-gitlab",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Review Utility Tool which facilitates in code reviewing easily.",
   "bin": {
     "coderoom": "./bin/coderoom.js"
