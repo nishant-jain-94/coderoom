@@ -5,7 +5,7 @@ A Review Utility Tool for Gitlab which facilitates in code reviewing easily.
 ## Install
 
 ```
-sudo npm install -g coderoom
+sudo npm install -g coderoom-gitlab
 ```
 
 ## Command Line Usage
