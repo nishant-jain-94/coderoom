@@ -29,11 +29,11 @@
         <tbody>
           <tr>
             <th scope="row">Total Members Submitted Assignment</th>
-            <td>{{totalMembersSubmittedAssignment}}</td>
+            <td>{{totalSubmittedMembers}}</td>
           </tr>
           <tr>
             <th scope="row">Total Members Yet to Submit Assignment</th>
-            <td>{{totalMembersYetToSubmitAssignment}}</td>
+            <td>{{totalDefaultedMembers}}</td>
           </tr>
         </tbody>
       </table>
@@ -45,11 +45,11 @@
           </tr>
         </thead>
         <tbody>
-          {{#listOfMembersSubmittedAssignments}}
+          {{#submittedMembers}}
           <tr>
-            <td>{{name}}</td>
+            <td>{{.}}</td>
           </tr>
-          {{/listOfMembersSubmittedAssignments}}
+          {{/submittedMembers}}
         </tbody>
       </table>
       <h3>Members Yet to Complete Assignment</h3>
@@ -60,11 +60,11 @@
           </tr>
         </thead>
         <tbody>
-          {{#listOfMembersYetToSubmitAssignment}}
+          {{#defaultedMembers}}
           <tr>
-            <td>{{name}}</td>
+            <td>{{.}}</td>
           </tr>
-          {{/listOfMembersYetToSubmitAssignment}}
+          {{/defaultedMembers}}
         </tbody>
       </table>
     </section>

@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Main CLI which is used to run the reviewer.
- * @author Nishant Jain
+ * @fileOverview Main CLI which is used to run the reviewer.
  */
 
 /* eslint no-console:off */
@@ -33,7 +32,7 @@ switch (arg) {
     break;
   }
   case 'open-issue': {
-    const issueOpener = require('../lib/open-issue');
+    const issueOpener = require('../lib/open-issues.fp');
     issueOpener.openIssues();
     break;
   }

@@ -1,0 +1,12 @@
+{
+  "REVIEWERS_NAME": "Anthony Gonsalvis",
+  "API_TOKEN": "pKZosz1ke344Hzgxkv4E",
+  "GITLAB_URL": "https://gitlab-cts.stackroute.in/",
+  "INCLUDED_GROUPS": [
+    162
+  ],
+  "EXCLUDED_GROUPS": [
+    163
+  ],
+  "ASSIGNMENT": "BootstrapAssignment"
+}

@@ -3,29 +3,25 @@ const sinon = require('sinon');
 const should = require('should');
 const proxyquire = require('proxyquire');
 
+const cadets = require('../fixtures/cadets.json');
+const config = require('../fixtures/load-config.json');
+const progressBar = require('../fixtures/progressBar');
+
 const cloneScript = proxyquire('../../lib/clone.fp.js', {
   './members.fp': {
-    getCadets: () => Promise.resolve(),
+    getCadets: () => Promise.resolve(cadets),
   },
   './config/config-file.fp': {
-    getConfig: () => ({
-      REVIEWERS_NAME: 'Nishant Jain',
-      API_TOKEN: 'pKZosz1ke344Hzgxkv4E',
-      GITLAB_URL: 'https://gitlab-cts.stackroute.in/',
-      INCLUDED_GROUPS: [
-        162,
-      ],
-      EXCLUDED_GROUPS: [
-        163,
-      ],
-      ASSIGNMENT: 'BootstrapAssignment',
-    }),
+    getConfig: () => config,
   },
   shelljs: {
     exec: (command, options, cb) => {
       cb(0);
     },
+    rm: () => 0,
+    which: R.T,
   },
+  'cli-progress': progressBar,
 });
 
 describe('Clone', () => {
@@ -91,6 +87,67 @@ describe('Clone', () => {
     exec.then((code) => {
       should.exist(code);
       code.should.exactly(0);
+      done();
+    });
+  });
+
+  it('`deleteExistingRepos` deletes all the repos', () => {
+    const { deleteExistingRepos } = cloneScript.__private__;
+    const exitCode = R.call(deleteExistingRepos);
+    should.exist(exitCode);
+    exitCode.should.be.exactly(0);
+  });
+
+  it('`checkIfGitExists` checks if the git exists', () => {
+    const { checkIfGitExists } = cloneScript.__private__;
+    const exitCode = R.call(checkIfGitExists);
+    should.exist(exitCode);
+    exitCode.should.be.exactly(true);
+  });
+
+  it('`cloneAllAssignments` should clone a repository', (done) => {
+    const { cloneAllAssignments, progressBar: progressBarStub } = cloneScript.__private__;
+    const exitCode = R.call(cloneAllAssignments, cadets);
+    Promise.all(exitCode).then(() => {
+      sinon.assert.calledOnce(progressBarStub.startStub);
+      sinon.assert.calledTwice(progressBarStub.incrementStub);
+      progressBarStub.startStub.reset();
+      progressBarStub.incrementStub.reset();
+      done();
+    });
+  });
+
+  it('`startProgressBar` should start the progressBar', () => {
+    const { startProgressBar, progressBar: progressBarStub } = cloneScript.__private__;
+    R.call(startProgressBar, cadets);
+    sinon.assert.calledOnce(progressBarStub.startStub);
+    progressBarStub.startStub.reset();
+  });
+
+  it('`incrementProgressBar` should increment the progress bar', () => {
+    const { incrementProgressBar, progressBar: progressBarStub } = cloneScript.__private__;
+    R.call(incrementProgressBar);
+    sinon.assert.calledOnce(progressBarStub.incrementStub);
+    progressBarStub.incrementStub.reset();
+  });
+
+  it('`cloneRepo` should clone a repository for a user', (done) => {
+    const { cloneRepo, progressBar: progressBarStub } = cloneScript.__private__;
+    const exit = R.call(cloneRepo, 'Anthony.Gonsalvis');
+    exit.then(() => {
+      sinon.assert.calledOnce(progressBarStub.incrementStub);
+      progressBarStub.incrementStub.reset();
+      done();
+    });
+  });
+
+  it('`clone` should get all the cadets and clone all the repositories', (done) => {
+    const { clone } = cloneScript;
+    const { progressBar: progressBarStub } = cloneScript.__private__;
+    const exit = R.call(clone);
+    exit.then(() => {
+      sinon.assert.calledOnce(progressBarStub.startStub);
+      sinon.assert.calledTwice(progressBarStub.incrementStub);
       done();
     });
   });
