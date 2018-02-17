@@ -1,0 +1,11 @@
+language: node_js
+notifications:
+  slack: theselftalk:EHiDWYYgq34Y172TrHTqA16W
+node_js:
+  - stable
+install:
+  - npm install
+script:
+  - npm test
+after_success:
+  - npm run coverage

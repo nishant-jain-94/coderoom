@@ -19,6 +19,8 @@
     "email": "nishantkumarajain@gmail.com"
   },
   "dependencies": {
+    "bunyan": "^1.8.12",
+    "bunyan-format": "^0.2.1",
     "chalk": "^2.3.0",
     "cli-progress": "^1.7.0",
     "cli-progress-bar": "^1.0.1",
