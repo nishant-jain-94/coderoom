@@ -9,7 +9,7 @@ const groups = require('./groups.json');
 class Gitlab {
   constructor(credentials) {
     this.credentials = credentials;
-    this.allGroupsStub = sinon.stub().yields(null, groups);
+    this.allGroupsStub = sinon.stub().yields(groups);
     this.groups = {
       all: this.allGroupsStub,
     };

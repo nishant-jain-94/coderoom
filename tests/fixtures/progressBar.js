@@ -5,8 +5,8 @@ const sinon = require('sinon');
 
 class Bar {
   constructor() {
-    this.startStub = sinon.stub();
-    this.incrementStub = sinon.stub();
+    this.startStub = sinon.stub().returns(Promise.resolve('started'));
+    this.incrementStub = sinon.stub().returns(Promise.resolve('incremented'));
     this.start = this.startStub;
     this.increment = this.incrementStub;
   }

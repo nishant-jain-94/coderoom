@@ -15,6 +15,6 @@ describe('Groups', () => {
       groups.should.be.a.instanceOf(Array);
       groups[0].should.have.properties(['name', 'value']);
       done();
-    });
+    }).catch(err => done(err));
   });
 });

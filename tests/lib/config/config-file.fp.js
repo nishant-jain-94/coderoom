@@ -8,6 +8,7 @@ const path = require('path');
 const sinon = require('sinon');
 const should = require('should');
 const proxyquire = require('proxyquire');
+const log = require('../../../logger')('config-file');
 const configFile = require('../../../lib/config/config-file.fp');
 
 const {
@@ -19,7 +20,7 @@ const {
 
 const getLocalMockConfig = () => {
   const mockConfig = {
-    REVIEWERS_NAME: 'Nishant Jain',
+    REVIEWERS_NAME: 'Anthony Gonsalvis',
     API_TOKEN: 'pKZosz1ke344Hzgxkv4E',
     GITLAB_URL: 'https://gitlab-cts.stackroute.in/',
     INCLUDED_GROUPS: [
@@ -34,7 +35,7 @@ const getLocalMockConfig = () => {
 
 const getGlobalMockConfig = () => {
   const mockConfig = {
-    REVIEWERS_NAME: 'Nishant Jain',
+    REVIEWERS_NAME: 'Anthony Gonsalvis',
     'https://gitlab-cts.stackroute.in/': 'pKZosz1ke344Hzgxkv4E',
   };
   return mockConfig;
@@ -155,14 +156,14 @@ describe('lib/config/config-file', () => {
     const transformedConfig = transformToGlobalConfig(mockConfig);
     should.exist(transformedConfig);
     transformedConfig.should.not.be.empty();
-    transformedConfig.should.have.property('REVIEWERS_NAME', 'Nishant Jain');
+    transformedConfig.should.have.property('REVIEWERS_NAME', 'Anthony Gonsalvis');
     transformedConfig.should.have.property('https://gitlab-cts.stackroute.in/', 'pKZosz1ke344Hzgxkv4E');
   });
 
-  it('should get & set config', () => {
+  it('should get and set config', () => {
     const mockConfig = getLocalMockConfig();
     const yamlMockConfigStringified = yamlStringifyTo2Spaces(mockConfig);
-    const writeFileSyncStub = () => sinon.stub().returns(yamlMockConfigStringified);
+    const writeFileSyncStub = sinon.stub().returns(yamlMockConfigStringified);
     const proxifiedConfig = proxyquire('../../../lib/config/config-file.fp', {
       fs: {
         existsSync: () => true,
@@ -180,10 +181,10 @@ describe('lib/config/config-file', () => {
     fetchedConfig.should.be.exactly(mockConfig);
   });
 
-  it('should get & set global config', () => {
+  it('should get and set global config', () => {
     const mockConfig = getGlobalMockConfig();
     const yamlMockConfigStringified = yamlStringifyTo2Spaces(mockConfig);
-    const writeFileSyncStub = () => sinon.stub().returns(yamlMockConfigStringified);
+    const writeFileSyncStub = sinon.stub().returns(yamlMockConfigStringified);
     const proxifiedConfig = proxyquire('../../../lib/config/config-file.fp', {
       fs: {
         existsSync: () => true,

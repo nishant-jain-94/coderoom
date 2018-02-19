@@ -43,6 +43,8 @@
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
+    "babel-preset-es2015-node": "^6.1.1",
+    "babel-register": "^6.26.0",
     "eslint": "^4.17.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.8.0",

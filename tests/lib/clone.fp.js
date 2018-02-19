@@ -6,6 +6,7 @@ const proxyquire = require('proxyquire');
 const cadets = require('../fixtures/cadets.json');
 const config = require('../fixtures/load-config.json');
 const progressBar = require('../fixtures/progressBar');
+const log = require('../../logger')('test/clone.fp.js');
 
 const cloneScript = proxyquire('../../lib/clone.fp.js', {
   './members.fp': {
@@ -72,12 +73,11 @@ describe('Clone', () => {
   it('`promisifiedShellExecCmd` should exec the command and return its result', (done) => {
     const { promisifiedShellExecCmd } = cloneScript.__private__;
     const exec = R.call(promisifiedShellExecCmd, {}, 'ls');
-
     exec.then((code) => {
       should.exist(code);
       code.should.be.exactly(0);
       done();
-    });
+    }).catch(err => done(err));
   });
 
   it('`curriedExecCommand` should exec the command and return its result', (done) => {
@@ -114,7 +114,7 @@ describe('Clone', () => {
       progressBarStub.startStub.reset();
       progressBarStub.incrementStub.reset();
       done();
-    });
+    }).catch(err => log.error(err));
   });
 
   it('`startProgressBar` should start the progressBar', () => {
@@ -138,7 +138,7 @@ describe('Clone', () => {
       sinon.assert.calledOnce(progressBarStub.incrementStub);
       progressBarStub.incrementStub.reset();
       done();
-    });
+    }).catch(err => log.error(err));
   });
 
   it('`clone` should get all the cadets and clone all the repositories', (done) => {
@@ -149,6 +149,6 @@ describe('Clone', () => {
       sinon.assert.calledOnce(progressBarStub.startStub);
       sinon.assert.calledTwice(progressBarStub.incrementStub);
       done();
-    });
+    }).catch(err => log.error(err));
   });
 });

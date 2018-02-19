@@ -5,7 +5,7 @@
 const R = require('ramda');
 const cadets = require('./cadets.json');
 
-const ls = () => R.map(R.prop('username'), cadets);
+const ls = () => R.map(cadet => `${cadet.username}/`, cadets);
 
 module.exports = {
   ls,
