@@ -1,7 +1,8 @@
 const R = require('ramda');
+const sinon = require('sinon');
 const should = require('should');
 const proxyquire = require('proxyquire');
-const sinon = require('sinon');
+const mockConfig = require('../../fixtures/load-config.json');
 
 const configInitializer = proxyquire('../../../lib/config/config-initializer.fp', {
   inquirer: {
@@ -9,11 +10,11 @@ const configInitializer = proxyquire('../../../lib/config/config-initializer.fp'
   },
   './config-file.fp': {
     getGlobalConfig: () => {
-      const mockConfig = {
+      const mockGlobalConfig = {
         REVIEWERS_NAME: 'Nishant Jain',
         'https://gitlab-cts.stackroute.in/': 'pKZosz1ke344Hzgxkv4E',
       };
-      return mockConfig;
+      return mockGlobalConfig;
     },
     setConfig: config => config,
     setGlobalConfig: config => config,
@@ -38,21 +39,6 @@ const getExpectedQuestionNames = () => {
   return expectedQuestionNames;
 };
 
-const getLocalMockConfig = () => {
-  const mockConfig = {
-    REVIEWERS_NAME: 'Nishant Jain',
-    API_TOKEN: 'pKZosz1ke344Hzgxkv4E',
-    GITLAB_URL: 'https://gitlab-cts.stackroute.in/',
-    INCLUDED_GROUPS: [
-      162,
-    ],
-    EXCLUDED_GROUPS: [
-      163,
-    ],
-  };
-  return mockConfig;
-};
-
 describe('Config Initializer', () => {
   it('getQuestions should get Questions', () => {
     const questions = _getQuestions();
@@ -73,7 +59,6 @@ describe('Config Initializer', () => {
   });
 
   it('setConfigs should call setConfig and setGlobalConfig', () => {
-    const mockConfig = getLocalMockConfig();
     const configs = _setConfigs(mockConfig);
     configs.should.be.an.Array();
     configs.length.should.be.exactly(2);
@@ -82,7 +67,6 @@ describe('Config Initializer', () => {
   });
 
   it('initializeConfig should call setConfigs and promptQuestions', (done) => {
-    const mockConfig = getLocalMockConfig();
     const setConfigStub = sinon.stub(configInitializer, '_setConfigs').resolves(mockConfig);
     const promptQuestionsStub = sinon.stub(configInitializer, '_promptQuestions').resolves(mockConfig);
     const assertSetConfigsIsCalled = () => setConfigStub.called.should.be.true();

@@ -8,8 +8,8 @@ const path = require('path');
 const sinon = require('sinon');
 const should = require('should');
 const proxyquire = require('proxyquire');
-const log = require('../../../logger')('config-file');
 const configFile = require('../../../lib/config/config-file.fp');
+const mockConfig = require('../..//fixtures/load-config.json');
 
 const {
   returnEmptyObject,
@@ -18,27 +18,12 @@ const {
   transformToGlobalConfig,
 } = configFile.__private__;
 
-const getLocalMockConfig = () => {
-  const mockConfig = {
-    REVIEWERS_NAME: 'Anthony Gonsalvis',
-    API_TOKEN: 'pKZosz1ke344Hzgxkv4E',
-    GITLAB_URL: 'https://gitlab-cts.stackroute.in/',
-    INCLUDED_GROUPS: [
-      162,
-    ],
-    EXCLUDED_GROUPS: [
-      163,
-    ],
-  };
-  return mockConfig;
-};
-
 const getGlobalMockConfig = () => {
-  const mockConfig = {
+  const mockGlobalConfig = {
     REVIEWERS_NAME: 'Anthony Gonsalvis',
     'https://gitlab-cts.stackroute.in/': 'pKZosz1ke344Hzgxkv4E',
   };
-  return mockConfig;
+  return mockGlobalConfig;
 };
 
 describe('lib/config/config-file', () => {
@@ -60,15 +45,14 @@ describe('lib/config/config-file', () => {
   });
 
   it('`yamlStringifyTo2Spaces` should convert a config into yaml format', () => {
-    const mockConfig = { foo: 'bar' };
-    const yamlStringifiedConfig = yamlStringifyTo2Spaces(mockConfig);
+    const config = { foo: 'bar' };
+    const yamlStringifiedConfig = yamlStringifyTo2Spaces(config);
     should.exist(yamlStringifiedConfig);
     yamlStringifiedConfig.should.be.an.instanceOf(String);
     yamlStringifiedConfig.should.be.exactly('foo: bar\n');
   });
 
   it('`loadConfig` should load the config object from the supplied configFile', () => {
-    const mockConfig = getLocalMockConfig();
     const yamlLoadStub = () => mockConfig;
     const proxifiedConfig = proxyquire('../../../lib/config/config-file.fp', {
       yamljs: {
@@ -101,7 +85,6 @@ describe('lib/config/config-file', () => {
   });
 
   it('`loadConfigDefaultingToEmptyObject` should return empty object incase of config file not found and should return config if the config file is present', () => {
-    const mockConfig = getLocalMockConfig();
     const yamlLoadStub = () => mockConfig;
     const proxifiedConfig = proxyquire('../../../lib/config/config-file.fp', {
       yamljs: {
@@ -126,7 +109,6 @@ describe('lib/config/config-file', () => {
   });
 
   it('`loadConfigDefaultingToError` should return the config if the config file path is found and throw error if its not found', () => {
-    const mockConfig = getLocalMockConfig();
     const yamlLoadStub = () => mockConfig;
     const proxifiedConfig = proxyquire('../../../lib/config/config-file.fp', {
       yamljs: {
@@ -152,7 +134,6 @@ describe('lib/config/config-file', () => {
   });
 
   it('should transformLocalConfig', () => {
-    const mockConfig = getLocalMockConfig();
     const transformedConfig = transformToGlobalConfig(mockConfig);
     should.exist(transformedConfig);
     transformedConfig.should.not.be.empty();
@@ -161,7 +142,6 @@ describe('lib/config/config-file', () => {
   });
 
   it('should get and set config', () => {
-    const mockConfig = getLocalMockConfig();
     const yamlMockConfigStringified = yamlStringifyTo2Spaces(mockConfig);
     const writeFileSyncStub = sinon.stub().returns(yamlMockConfigStringified);
     const proxifiedConfig = proxyquire('../../../lib/config/config-file.fp', {
@@ -182,8 +162,8 @@ describe('lib/config/config-file', () => {
   });
 
   it('should get and set global config', () => {
-    const mockConfig = getGlobalMockConfig();
-    const yamlMockConfigStringified = yamlStringifyTo2Spaces(mockConfig);
+    const config = getGlobalMockConfig();
+    const yamlMockConfigStringified = yamlStringifyTo2Spaces(config);
     const writeFileSyncStub = sinon.stub().returns(yamlMockConfigStringified);
     const proxifiedConfig = proxyquire('../../../lib/config/config-file.fp', {
       fs: {

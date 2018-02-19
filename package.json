@@ -6,7 +6,9 @@
   "scripts": {
     "lint-fix": "node_modules/.bin/eslint --fix .",
     "lint": "node_modules/.bin/eslint .",
-    "test": "node_modules/.bin/mocha --recursive tests"
+    "pretest": "npm run lint",
+    "test": "node_modules/.bin/mocha --recursive tests",
+    "posttest": "node_modules/.bin/nyc node_modules/.bin/mocha --recursive tests"
   },
   "author": "Nishant Jain",
   "license": "ISC",
@@ -34,6 +36,7 @@
     "inquirer": "^4.0.1",
     "lodash": "^4.17.4",
     "mustache": "^2.3.0",
+    "nyc": "^11.4.1",
     "opn": "^5.2.0",
     "ramda": "^0.25.0",
     "request": "^2.83.0",
