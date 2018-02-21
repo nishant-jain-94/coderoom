@@ -1,4 +1,4 @@
-# Coderoom
+# Coderoom [![Build Status](https://travis-ci.org/nishant-jain-94/coderoom.svg?branch=master)](https://travis-ci.org/nishant-jain-94/coderoom) [![Coverage Status](https://coveralls.io/repos/github/nishant-jain-94/coderoom/badge.svg?branch=master)](https://coveralls.io/github/nishant-jain-94/coderoom?branch=master) 
 
 A Review Utility Tool for Gitlab which facilitates in code reviewing easily.
 
