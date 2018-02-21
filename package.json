@@ -1,12 +1,16 @@
 {
   "name": "coderoom-gitlab",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Review Utility Tool which facilitates in code reviewing easily.",
   "bin": {
     "coderoom": "./bin/coderoom.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint-fix": "node_modules/.bin/eslint --fix .",
+    "lint": "node_modules/.bin/eslint .",
+    "pretest": "npm run lint",
+    "test": "node_modules/.bin/mocha --recursive tests",
+    "coverage": "node_modules/.bin/nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },
   "author": "Nishant Jain",
   "license": "ISC",
@@ -19,26 +23,42 @@
     "email": "nishantkumarajain@gmail.com"
   },
   "dependencies": {
+    "bunyan": "^1.8.12",
+    "bunyan-format": "^0.2.1",
     "chalk": "^2.3.0",
+    "cli-progress": "^1.7.0",
     "cli-progress-bar": "^1.0.1",
     "command-line-args": "^4.0.7",
     "command-line-usage": "^4.0.2",
     "date-time": "^2.1.0",
-    "eslint": "^4.12.1",
+    "fluture": "^8.0.2",
     "gitlab": "^1.7.1",
     "has-flag": "^2.0.0",
     "html-pdf": "^2.2.0",
     "inquirer": "^4.0.1",
     "lodash": "^4.17.4",
     "mustache": "^2.3.0",
+    "nyc": "^11.4.1",
     "opn": "^5.2.0",
+    "ramda": "^0.25.0",
     "request": "^2.83.0",
     "request-promise": "^4.2.2",
+    "request-promise-native": "^1.0.5",
     "shelljs": "^0.7.8",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
+    "babel-preset-es2015-node": "^6.1.1",
+    "babel-register": "^6.26.0",
+    "coveralls": "^3.0.0",
+    "eslint": "^4.17.0",
     "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.8.0"
+    "eslint-plugin-import": "^2.8.0",
+    "mocha": "^5.0.0",
+    "mocha-lcov-reporter": "^1.3.0",
+    "proxyquire": "^1.8.0",
+    "rewire": "^3.0.2",
+    "should": "^13.2.1",
+    "sinon": "^4.2.2"
   }
 }

@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "name": "Foobar Group",
+    "path": "foo-bar",
+    "description": "An interesting group"
+  },
+  {
+    "id": 2,
+    "name": "Foobaz Group",
+    "path": "foo-baz",
+    "description": "Yet another interesting group"
+  }
+]
