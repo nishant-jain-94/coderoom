@@ -6,7 +6,10 @@ const proxyquire = require('proxyquire');
 const cadets = require('../fixtures/cadets.json');
 const config = require('../fixtures/load-config.json');
 const progressBar = require('../fixtures/progressBar');
-const log = require('../../logger')('test/clone.fp.js');
+
+const cloneCMD = 'git clone git@gitlab-cts.stackroute.in:Anthony.Gonsalvis/BootstrapAssignment.git Anthony.Gonsalvis';
+
+const errorStub = sinon.stub();
 
 const cloneScript = proxyquire('../../lib/clone.fp.js', {
   './members.fp': {
@@ -17,11 +20,18 @@ const cloneScript = proxyquire('../../lib/clone.fp.js', {
   },
   shelljs: {
     exec: (command, options, cb) => {
-      cb(0);
+      if (R.equals(command, cloneCMD)) {
+        cb(0);
+      } else {
+        cb(1, null, 'Couldnt clone the repository due no access rights');
+      }
     },
     rm: () => 0,
     which: R.T,
   },
+  '../logger': () => ({
+    error: errorStub,
+  }),
   'cli-progress': progressBar,
 });
 
@@ -36,21 +46,21 @@ describe('Clone', () => {
     const { buildCloneCmd } = cloneScript.__private__;
     const cmd = R.call(buildCloneCmd, 'gitlab-cts.stackroute.in', 'BootstrapAssignment', 'Anthony.Gonsalvis');
     should.exist(cmd);
-    cmd.should.be.exactly('git clone git@gitlab-cts.stackroute.in:Anthony.Gonsalvis/BootstrapAssignment.git Anthony.Gonsalvis');
+    cmd.should.be.exactly(cloneCMD);
   });
 
   it('`buildCloneCmdWithGitlabUrl` should return a git clone command', () => {
     const { buildCloneCmdWithGitlabUrl } = cloneScript.__private__;
     const cmd = R.call(buildCloneCmdWithGitlabUrl, 'BootstrapAssignment', 'Anthony.Gonsalvis');
     should.exist(cmd);
-    cmd.should.be.exactly('git clone git@gitlab-cts.stackroute.in:Anthony.Gonsalvis/BootstrapAssignment.git Anthony.Gonsalvis');
+    cmd.should.be.exactly(cloneCMD);
   });
 
   it('`buildCloneCmdWithGitlabUrlOverAssignment` should return a cmd to clone git repository', () => {
     const { buildCloneCmdWithGitlabUrlOverAssignment } = cloneScript.__private__;
     const cmd = R.call(buildCloneCmdWithGitlabUrlOverAssignment, 'Anthony.Gonsalvis');
     should.exist(cmd);
-    cmd.should.be.exactly('git clone git@gitlab-cts.stackroute.in:Anthony.Gonsalvis/BootstrapAssignment.git Anthony.Gonsalvis');
+    cmd.should.be.exactly(cloneCMD);
   });
 
   it('`getUrlWithNoProtocol` should return a url removing the protcol substring', () => {
@@ -72,17 +82,27 @@ describe('Clone', () => {
 
   it('`promisifiedShellExecCmd` should exec the command and return its result', (done) => {
     const { promisifiedShellExecCmd } = cloneScript.__private__;
-    const exec = R.call(promisifiedShellExecCmd, {}, 'ls');
+    const exec = R.call(promisifiedShellExecCmd, {}, cloneCMD);
     exec.then((code) => {
       should.exist(code);
       code.should.be.exactly(0);
       done();
-    }).catch(err => done(err));
+    });
+  });
+
+  it('`promisifiedShellExecCmd` should throw error and', (done) => {
+    const { promisifiedShellExecCmd } = cloneScript.__private__;
+    R.call(promisifiedShellExecCmd, {}, `${cloneCMD}/`)
+      .then(() => {
+        console.log(errorStub.args);
+        sinon.assert.calledOnce(errorStub);
+        done();
+      });
   });
 
   it('`curriedExecCommand` should exec the command and return its result', (done) => {
     const { curriedExecCommand } = cloneScript.__private__;
-    const exec = R.call(curriedExecCommand, {}, 'ls');
+    const exec = R.call(curriedExecCommand, {}, cloneCMD);
 
     exec.then((code) => {
       should.exist(code);
@@ -114,7 +134,7 @@ describe('Clone', () => {
       progressBarStub.startStub.reset();
       progressBarStub.incrementStub.reset();
       done();
-    }).catch(err => log.error(err));
+    });
   });
 
   it('`startProgressBar` should start the progressBar', () => {
@@ -138,7 +158,7 @@ describe('Clone', () => {
       sinon.assert.calledOnce(progressBarStub.incrementStub);
       progressBarStub.incrementStub.reset();
       done();
-    }).catch(err => log.error(err));
+    });
   });
 
   it('`clone` should get all the cadets and clone all the repositories', (done) => {
@@ -149,6 +169,6 @@ describe('Clone', () => {
       sinon.assert.calledOnce(progressBarStub.startStub);
       sinon.assert.calledTwice(progressBarStub.incrementStub);
       done();
-    }).catch(err => log.error(err));
+    });
   });
 });

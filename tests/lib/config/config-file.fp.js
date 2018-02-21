@@ -35,8 +35,7 @@ describe('lib/config/config-file', () => {
 
   it('`throwConfigFileNotFound` should throwConfigFileNotFound', () => {
     try {
-      const file = throwConfigFileNotFound();
-      should.not.exist(file);
+      throwConfigFileNotFound();
     } catch (err) {
       should.exist(err);
       err.should.have.property('message');
@@ -118,11 +117,10 @@ describe('lib/config/config-file', () => {
     const wrongConfigFilePath = path.join(process.cwd(), 'lib/config/.reviewrc');
     const { loadConfigDefaultingToError } = proxifiedConfig.__private__;
     try {
-      const loadedConfigInCaseOfFileNotFound = R.call(
+      R.call(
         loadConfigDefaultingToError,
         wrongConfigFilePath,
       );
-      should.not.exist(loadedConfigInCaseOfFileNotFound);
     } catch (err) {
       should.exist(err);
       err.message.should.be.exactly('The configuration file .reviewrc cannot be found. Use \'coderoom initialize\' command to initialize coderoom in the folder');

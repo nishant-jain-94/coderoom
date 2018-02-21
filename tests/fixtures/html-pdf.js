@@ -16,7 +16,11 @@ function HtmlPDF() {
 
   this.toFile = (outputPath, cb) => {
     R.call(this.toFileStub, outputPath, cb);
-    cb(null, '');
+    if (outputPath) {
+      cb(null, '');
+    } else {
+      cb(new Error('The output path doesnt exists'), null);
+    }
   };
 }
 
