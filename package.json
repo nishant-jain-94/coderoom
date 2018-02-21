@@ -1,8 +1,10 @@
 {
   "name": "coderoom-gitlab",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Review Utility Tool which facilitates in code reviewing easily.",
-  "bin": "./bin/coderoom.js",
+  "bin": {
+    "coderoom": "./bin/coderoom.js"
+  },
   "scripts": {
     "lint-fix": "node_modules/.bin/eslint --fix .",
     "lint": "node_modules/.bin/eslint .",
